@@ -9,10 +9,15 @@ import (
 )
 
 type StatePending struct {
-	ticks int
+	ticks   int
+	message TickMessage
 }
 
 func (s *StatePending) Enter(g *Game) {
+	s.message = TickMessage{
+		ticks:    90,
+		messages: []string{"Pending", "Pending.", "Pending..", "Pending..."},
+	}
 }
 
 func (s *StatePending) Leave(g *Game) {
@@ -20,6 +25,7 @@ func (s *StatePending) Leave(g *Game) {
 
 func (s *StatePending) Update(g *Game) error {
 	s.ticks++
+	s.message.Update()
 	return nil
 }
 
@@ -35,13 +41,5 @@ func (s *StatePending) Draw(g *Game, screen *ebiten.Image) {
 
 	face := assets.FontGroups[assets.DisplayFont].GetFace(text.WeightBold)
 
-	if s.ticks%80 < 20 {
-		text.Draw(screen, "Pending", face, opts)
-	} else if s.ticks%80 < 40 {
-		text.Draw(screen, "Pending.", face, opts)
-	} else if s.ticks%80 < 60 {
-		text.Draw(screen, "Pending..", face, opts)
-	} else {
-		text.Draw(screen, "Pending...", face, opts)
-	}
+	text.Draw(screen, s.message.Message(), face, opts)
 }
