@@ -7,6 +7,7 @@ type TickMessage struct {
 	messages     []string
 }
 
+// Update increments current ticks and loops as necessary.
 func (t *TickMessage) Update() {
 	t.currentTicks++
 	if t.currentTicks >= t.ticks {
@@ -14,6 +15,7 @@ func (t *TickMessage) Update() {
 	}
 }
 
+// Message gets the current message.
 func (t *TickMessage) Message() string {
 	i := float64(t.currentTicks) / float64(t.ticks)
 	return t.messages[int(i*float64(len(t.messages)))]

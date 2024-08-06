@@ -8,11 +8,13 @@ import (
 	"github.com/hajimehoshi/ebiten/v2/text/v2"
 )
 
+// StatePending represents the state when awaiting to connect to... peers? a room?
 type StatePending struct {
 	ticks   int
 	message TickMessage
 }
 
+// Enter is called when first entering the state.
 func (s *StatePending) Enter(g *Game) {
 	s.message = TickMessage{
 		ticks:    90,
@@ -20,15 +22,18 @@ func (s *StatePending) Enter(g *Game) {
 	}
 }
 
+// Leave is called when leaving the state.
 func (s *StatePending) Leave(g *Game) {
 }
 
+// Update is update.
 func (s *StatePending) Update(g *Game) error {
 	s.ticks++
 	s.message.Update()
 	return nil
 }
 
+// Draw draws the pending text to the screen.
 func (s *StatePending) Draw(g *Game, screen *ebiten.Image) {
 	screen.Fill(color.White)
 	opts := &text.DrawOptions{}
